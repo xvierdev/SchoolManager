@@ -14,7 +14,7 @@ else
 fi
 
 echo "Starting Flask server ..."
-flask run --host=0.0.0.0
+flask run --host=0.0.0.0 --port:80
 
 clear
 echo "Deactivating virtual environment"
