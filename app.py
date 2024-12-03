@@ -1,24 +1,34 @@
-from flask import Flask, request, render_template, session
-from random import randint
-import sqlite3
+from flask import Flask, request, render_template, session, redirect
+from sqlite3 import connect
+import bcrypt
 
 app = Flask(__name__)
-app.secret_key = '123deoliveira4'
+app.secret_key = 'secret_key_here' # override this
 
 def init_db():
-    conn = sqlite3.connect('mydata.db')
+    conn = connect('mydata.db')
     cursor = conn.cursor()
 
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS users (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                name TEXT,
-                class TEXT,
-                password TEXT
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT,
+            class TEXT,
+            password TEXT
         )
     ''')
 
-    cursor.execute('INSERT INTO users (name, class, password) VALUES ("admin","admin","123")')
+    # Check if the 'admin' user already exists
+    cursor.execute("SELECT * FROM users WHERE name = ?", ('admin',))
+    result = cursor.fetchone()
+
+    # If the user doesn't exist, insert it
+    if not result:
+        hashed_password = bcrypt.hashpw('admin'.encode('utf-8'), bcrypt.gensalt())
+        cursor.execute('''
+            INSERT INTO users (name, class, password)
+            VALUES (?, ?, ?)
+        ''', ('admin', 'admin', hashed_password))
 
     conn.commit()
     conn.close()
@@ -26,13 +36,22 @@ def init_db():
 def valid_entrance():
     name = session['name']
     password = session['password']
-    conn = sqlite3.connect('mydata.db')
-    cursor = conn.cursor();
-    cursor.execute(f"SELECT * FROM  users WHERE name = '{name}' AND password = '{password}'")
-    result = cursor.fetchall()
-    conn.commit()
-    conn.close()
-    return result
+
+    conn = connect('mydata.db')
+    cursor = conn.cursor()
+
+    # Retrieve the stored hashed password from the database
+    cursor.execute("SELECT password FROM users WHERE name = ?", (name,))
+    result = cursor.fetchone()
+
+    if result:
+        stored_hash = result[0]
+        # Hash the provided password and compare it to the stored hash
+        conn.close()
+        return bcrypt.checkpw(password.encode('utf-8'), stored_hash)
+    else:
+        conn.close()
+        return False
 
 def initialize_session():
     for variable_name in ['name', 'class']:
@@ -56,13 +75,17 @@ def login():
 
 @app.route('/insert', methods=['POST'])
 def insert_new_user():
-    conn = sqlite3.connect('mydata.db')
+    conn = connect('mydata.db')
     cursor = conn.cursor()
     cursor.execute(f'''INSERT INTO users (name, class, password) VALUES ("{request.form['user']}","{{request.form['uclass']}}","{{request.form['pass']}}")''')
     conn.commit()
     conn.close()
     return render_template('index.html')
 
+@app.route('/logout')
+def logout():
+    session.clear()
+    return redirect('/')
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -3,12 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <title>Hello World</title>
 </head>
 <body>
     <header>
         <div>
-            <span>{{ username }}</span> <span>{{ uclass }}</span>
+            <span>{{ username }}</span> <span>{{ uclass }}</span><button onclick="logout()">Sair</button>
         </div>
     </header>
     <h1>Welcome to my page!</h1>
@@ -17,12 +18,14 @@
         <form action="/insert" method="post">
             <fieldset>
                 <legend>Create new user:</legend>
-                <label for="user"></label><input type="text" name="user" id="user">
-                <label for="uclass"></label><input type="password" name="uclass" id="uclass">
-                <label for="pass"></label><input type="text" name="pass" id="password">
-                <input type="submit">
+                <p><label for="user"></label><input type="text" name="user" id="user"></p>
+                <p><label for="uclass"></label><input type="password" name="uclass" id="uclass"></p>
+                <p><label for="pass"></label><input type="text" name="pass" id="password"></p>
+                <input type="submit" value="Adicionar">
             </fieldset>
         </form>
     </section>
+
+    <script src="{{ url_for('static', filename='scripts.js') }}"></script>
 </body>
 </html>
