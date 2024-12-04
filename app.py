@@ -77,7 +77,8 @@ def login():
 def insert_new_user():
     conn = connect('mydata.db')
     cursor = conn.cursor()
-    cursor.execute(f'''INSERT INTO users (name, class, password) VALUES ("{request.form['user']}","{{request.form['uclass']}}","{{request.form['pass']}}")''')
+    passwd = bcrypt.hashpw(request.form['pass'].encode('utf-8'), bcrypt.gensalt())
+    cursor.execute(f'''INSERT INTO users (name, class, password) VALUES ("{request.form['user']}","{request.form['uclass']}","{passwd}")''')
     conn.commit()
     conn.close()
     return render_template('index.html')
