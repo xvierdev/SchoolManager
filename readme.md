@@ -1,0 +1,3 @@
+# Projeto de gerenciamento de turmas e alunos.  
+
+Este projeto desenvolve um sistema web simples para cadastrar alunos e turmas utilizando Python, o framework Flask e o banco de dados SQLite3. A aplicação permite criar, visualizar, editar e excluir informações de alunos e turmas, fornecendo uma interface intuitiva para gerenciamento de dados acadêmicos. Ideal para pequenas instituições de ensino ou para fins de estudo e aprendizado.
