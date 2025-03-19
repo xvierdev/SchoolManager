@@ -1,3 +1,17 @@
-# Projeto de gerenciamento de turmas e alunos.  
+# SchoolManager  
 
-Este projeto desenvolve um sistema web simples para cadastrar alunos e turmas utilizando Python, o framework Flask e o banco de dados SQLite3. A aplicação permite criar, visualizar, editar e excluir informações de alunos e turmas, fornecendo uma interface intuitiva para gerenciamento de dados acadêmicos. Ideal para pequenas instituições de ensino ou para fins de estudo e aprendizado.
+Um sistema web local desenvolvido em Flask com banco de dados SQLite, rodando em um servidor Linux, para auxiliar professores na organização de turmas, alunos, horários, chamadas e geração de planilhas de frequência.
+
+## Objetivos
+- Facilitar a organização de informações de turmas e alunos.
+- Permitir a criação e visualização de horários de aulas.
+- Implementar um sistema de chamada online.
+- Gerar planilhas de frequência automaticamente.
+- Fornecer uma interface web intuitiva para uso exclusivo do professor em ambiente local.
+
+## Membros
+- Wesley
+- Iago
+- Francisco
+- Felipe
+- Davi
